@@ -1,0 +1,53 @@
+{
+  "name": "blaspsoft/doxswap",
+  "description": "Doxswap is a simple document conversion package for Laravel which uses LibreOffice to convert documents to a variety of formats.",
+  "keywords": [
+    "blaspsoft",
+    "doxswap"
+  ],
+  "homepage": "https://github.com/blaspsoft/doxswap",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Michael Deeming",
+      "email": "mike.deeming@blaspsoft.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^10.0",
+    "phpunit/phpunit": "^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Blaspsoft\\Doxswap\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Blaspsoft\\Doxswap\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Blaspsoft\\Doxswap\\DoxswapServiceProvider"
+      ],
+      "aliases": {
+        "Doxswap": "Blaspsoft\\Doxswap\\Facades\\Doxswap"
+      }
+    }
+  }
+}
