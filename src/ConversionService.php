@@ -3,6 +3,7 @@
 namespace Blaspsoft\Doxswap;
 
 use Exception;
+use Blaspsoft\Onym\Facades\Onym;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
@@ -76,32 +77,22 @@ class ConversionService
     public function convertFile(string $filename, string $toExtension): string
     {
         $filePath = Storage::disk($this->storageDisk)->path($filename);
-
         $fromExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
-        $mimeType = $this->getMimeType($fromExtension);
+        if (!$this->isSupportedMimeType($fromExtension)) {
+            throw new UnsupportedMimeTypeException($fromExtension);
+        }
 
         if (!$this->isSupportedConversion($fromExtension, $toExtension)) {
             throw new UnsupportedConversionException($fromExtension, $toExtension);
         }
 
-        if (!$mimeType) {
-            throw new UnsupportedMimeTypeException($fromExtension);
-        }
-
         try {
-           
             $this->process($filePath, $toExtension);
-
-            $outputPath = $this->renameFile($filePath, $toExtension);
-
-
+            $outputPath = $this->renameConvertedFile($filePath, $toExtension);
         } catch (ProcessFailedException $e) {
-
             throw new ConversionFailedException($e->getMessage());
-
         } finally {
-
             $this->cleanup($filename);
         }
 
@@ -125,7 +116,6 @@ class ConversionService
         ];
 
         $process = new Process($command);
-
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -147,14 +137,14 @@ class ConversionService
     }
 
     /**
-     * Get the MIME type for the given extension.
+     * Check if the mime type is supported.
      *
-     * @param string $fromExtension
-     * @return string|null
+     * @param string $extension
+     * @return bool
      */
-    public function getMimeType(string $fromExtension): ?string
+    public function isSupportedMimeType(string $extension): bool
     {
-        return $this->mimeTypes[$fromExtension] ?? null;
+        return isset($this->mimeTypes[$extension]);
     }
 
     /**
@@ -177,19 +167,12 @@ class ConversionService
      * @param string $toExtension
      * @return string
      */
-    protected function renameFile(string $filePath, string $toExtension): string
+    protected function renameConvertedFile(string $filePath, string $toExtension): string
     {
-        $strategy = config('doxswap.filename.strategy');
-        $options = config('doxswap.filename.options');
-
         $originalOutputFilePath = Storage::disk($this->outputDisk)->path('') . File::name($filePath) . '.' . $toExtension;
-
-        $filenameGenerator = new FilenameGeneratorService();
-
-        $newOutputFilePath = Storage::disk($this->outputDisk)->path($filenameGenerator->generate($originalOutputFilePath, $toExtension, $strategy, $options));
-
+        $filename = Onym::make(strategy: 'random', extension: $toExtension, options: ['length' => 24]);
+        $newOutputFilePath = Storage::disk($this->outputDisk)->path($filename);
         File::move($originalOutputFilePath, $newOutputFilePath);
-
         return $newOutputFilePath;
     }
 }

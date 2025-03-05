@@ -50,49 +50,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Filename Generation Settings
-    |--------------------------------------------------------------------------
-    |
-    | Configure how converted files should be named by default.
-    | Available strategies: 'original', 'random', 'uuid', 'timestamp', 'date',
-    | 'prefix', 'suffix', 'numbered', 'slug', 'hash'
-    |
-    */
-
-    'filename' => [
-        // Default strategy to use when none is specified
-        'strategy' => 'random',
-
-        // Default options for each strategy
-        'options' => [
-            'random' => [
-                'length' => 16,
-            ],
-            'timestamp' => [
-                'format' => 'Y-m-d_H-i-s',
-            ],
-            'date' => [
-                'format' => 'Y-m-d',
-            ],
-            'prefix' => [
-                'prefix' => 'converted_',
-            ],
-            'suffix' => [
-                'suffix' => '_converted',
-            ],
-            'numbered' => [
-                'number' => 1,
-                'separator' => '_',
-            ],
-            'hash' => [
-                'algorithm' => 'md5',
-                'length' => 16,
-            ],
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Supported Conversions
     |--------------------------------------------------------------------------
     |

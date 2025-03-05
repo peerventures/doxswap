@@ -6,8 +6,9 @@ use Exception;
 
 class UnsupportedConversionException extends Exception
 {
-    public function __construct($message = "Unsupported conversion", $code = 0)
+    public function __construct(string $fromExtension, string $toExtension)
     {
-        parent::__construct($message, $code);
+        $message = "Conversion from '{$fromExtension}' to '{$toExtension}' is not supported";
+        parent::__construct($message, 0); // Note the integer 0 for code
     }
 }

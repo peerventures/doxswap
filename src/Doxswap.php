@@ -4,6 +4,10 @@ namespace Blaspsoft\Doxswap;
 
 use Blaspsoft\Doxswap\ConversionService;
 
+/**
+ * @method static \Blaspsoft\Doxswap\Doxswap convert(string $file, string $toFormat)
+ * @method static \Blaspsoft\Doxswap\Doxswap configure(string $disk, string $outputDisk)
+ */
 class Doxswap
 {
     /**

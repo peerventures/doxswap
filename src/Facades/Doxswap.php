@@ -5,7 +5,8 @@ namespace Blaspsoft\Doxswap\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Blaspsoft\Doxswap\Skeleton\SkeletonClass
+ * @method static \Blaspsoft\Doxswap\Doxswap convert(string $file, string $toFormat)
+ * @method static \Blaspsoft\Doxswap\Doxswap configure(string $disk, string $outputDisk)
  */
 class Doxswap extends Facade
 {
