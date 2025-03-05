@@ -1,318 +1,179 @@
 <p align="center">
     <img src="./.github/assets/icon.png" alt="Onym Icon" width="150" height="150"/>
     <p align="center">
-        <a href="https://github.com/Blaspsoft/blasp/actions/workflows/main.yml"><img alt="GitHub Workflow Status (main)" src="https://github.com/Blaspsoft/onym/actions/workflows/main.yml/badge.svg"></a>
-        <a href="https://packagist.org/packages/blaspsoft/onym"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/blaspsoft/onym"></a>
-        <a href="https://packagist.org/packages/blaspsoft/onym"><img alt="Latest Version" src="https://img.shields.io/packagist/v/blaspsoft/onym"></a>
-        <a href="https://packagist.org/packages/blaspsoft/onym"><img alt="License" src="https://img.shields.io/packagist/l/blaspsoft/onym"></a>
+        <a href="https://github.com/Blaspsoft/doxswap/actions/workflows/main.yml"><img alt="GitHub Workflow Status (main)" src="https://github.com/Blaspsoft/doxswap/actions/workflows/main.yml/badge.svg"></a>
+        <a href="https://packagist.org/packages/blaspsoft/doxswap"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/blaspsoft/doxswap"></a>
+        <a href="https://packagist.org/packages/blaspsoft/doxswap"><img alt="Latest Version" src="https://img.shields.io/packagist/v/blaspsoft/doxswap"></a>
+        <a href="https://packagist.org/packages/blaspsoft/doxswap"><img alt="License" src="https://img.shields.io/packagist/l/blaspsoft/doxswap"></a>
     </p>
 </p>
 
-# Doxswap - A simple document converter
+# Doxswap
 
-A flexible Laravel package for generating filenames using various strategies and options.
+A Laravel package for seamless document conversion using LibreOffice. Convert between various document formats like DOCX, PDF, ODT and more with a simple, elegant API.
 
 ## 🚀 Features
 
-- ✅ **Flexible Filename Generation** – Generate filenames dynamically using various strategies.
-- 🎲 **Multiple Strategies** – Supports `random`, `uuid`, `timestamp`, `date`, `numbered`, `slug`, and `hash`.
-- 🔧 **Customizable Output** – Specify filename, extension, and additional formatting options.
-- 🎯 **Laravel-Friendly** – Designed to work seamlessly with Laravel's filesystem and configuration.
-- 📂 **Human-Readable & Unique Names** – Ensures filenames are structured, collision-free, and easy to understand.
-- ⚙️ **Configurable Defaults** – Define global settings in `config/onym.php` for consistency across your application.
-- 🔌 **Extensible & Developer-Friendly** – Easily add custom filename strategies or modify existing ones.
+- 📄 **Multiple Format Support** – Convert between DOCX, PDF, ODT, and other document formats.
+- 🚀 **Simple API** – Easy-to-use interface for document conversion operations.
+- 💾 **Laravel Storage Integration** – Works seamlessly with Laravel's filesystem drivers.
+- ⚡ **Efficient Processing** – Optimized conversion using LibreOffice's powerful engine.
+- 🔒 **Secure File Handling** – Safe and secure document processing with proper cleanup.
+- ⚙️ **Configurable Settings** – Customize paths, storage disks, and conversion options.
+- 🛡️ **Error Handling** – Robust exception handling for unsupported formats and conversions.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require blaspsoft/onym
+composer require blaspsoft/doxswap
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="onym-config"
+php artisan vendor:publish --tag="doxswap-config"
 ```
 
-## Usage
+### Overview
 
-### Available Strategies
+The `config/doxswap.php` file includes:
 
-### Random Strategy
+#### 💾 Storage
 
-Generates a random string of characters for the filename.
+- `input_disk`: Where to read files from (default: 'public')
+- `output_disk`: Where to save converted files (default: 'public')
+- `perform_cleanup`: Delete input files after conversion (default: false)
 
-**Options:**
-
-- `length` (int): The length of the random string
-  - Default: 16
-  - Example: `['length' => 8]` generates "a1b2c3d4.txt"
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'temp_']` generates "temp_a1b2c3d4.txt"
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_draft']` generates "a1b2c3d4_draft.txt"
+#### 🛠️ LibreOffice Path
 
 ```php
-use Blaspsoft\Onym\Facades\Onym;
-
-// Generate an 8-character random filename with prefix and suffix
-Onym::make(strategy: 'random', options: [
-    'length' => 8,
-    'prefix' => 'temp_',
-    'suffix' => '_draft'
-]);
-// Result: "temp_a1b2c3d4_draft.txt"
-
-// You can also use the random method directly
-Onym::random(string $extension, ?array $options = [])
+'libre_office_path' => env('LIBRE_OFFICE_PATH', '/usr/bin/soffice')
 ```
 
-### UUID Strategy
+Default paths by OS:
 
-Generates a UUID v4 (universally unique identifier) for the filename.
+- 🐧 Linux: `/usr/bin/soffice`
+- 🍎 macOS: `/Applications/LibreOffice.app/Contents/MacOS/soffice`
+- 🪟 Windows: `C:\Program Files\LibreOffice\program\soffice.exe`
 
-**Options:**
+#### 📄 File Types
 
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'id_']` generates "id_123e4567-e89b-12d3-a456-426614174000.txt"
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_backup']` generates "123e4567-e89b-12d3-a456-426614174000_backup.txt"
+Supports various document formats including:
+
+- Documents: DOC, DOCX, ODT, RTF, TXT
+- Spreadsheets: XLS, XLSX, ODS, CSV
+- Presentations: PPT, PPTX, ODP
+- Images: JPG, PNG, SVG, BMP, TIFF
+- Web: HTML, XML
+- Other: PDF, EPUB
+
+[Conversion Matrix Here]
+
+### Usage
 
 ```php
-use Blaspsoft\Onym\Facades\Onym;
+$convertedFile = Doxswap::convert('sample.docx', 'pdf');
 
-// Generate a UUID filename with prefix and suffix
-Onym::make(strategy: 'uuid', options: [
-    'prefix' => 'id_',
-    'suffix' => '_backup'
-]);
-// Result: "id_123e4567-e89b-12d3-a456-426614174000_backup.txt"
+/**
+ * Returns a Doxswap object with the following properties:
+ *
+ * @property string $inputFile      The original input filename
+ * @property string $outputFile     The full path to the converted output file
+ * @property string $toFormat      The format the file was converted to (e.g. 'pdf')
+ * @property ConversionService $conversionService  The service used for conversion
+ */
 
-// You can also use the uuid method directly
-Onym::uuid(string $extension, ?array $options = [])
 ```
 
-### Timestamp Strategy
+## Requirements
 
-Adds a timestamp to the filename using PHP's DateTime formatting.
+### LibreOffice
 
-**Options:**
+This package requires LibreOffice to be installed on your system. Here's how to install it:
 
-- `format` (string): PHP DateTime format string
-  - Default: 'Y-m-d_H-i-s'
-  - Common formats:
-    - `'Y-m-d_H-i-s'` → "2024-03-15_14-30-00"
-    - `'YmdHis'` → "20240315143000"
-    - `'U'` → Unix timestamp (e.g., "1710506400")
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'log_']`
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_archive']`
+#### Ubuntu/Debian
 
-```php
-use Blaspsoft\Onym\Facades\Onym;
-
-// Using timestamp with prefix and suffix
-Onym::make('document', 'pdf', 'timestamp', [
-    'format' => 'Y-m-d_H-i-s',
-    'prefix' => 'log_',
-    'suffix' => '_archive'
-]);
-// Result: "log_2024-03-15_14-30-00_document_archive.pdf"
-
-// You can also use the timestamp method directly
-Onym::timestamp(string $defaultFilename, string $extension, ?array $options = [])
+```bash
+sudo apt update
+sudo apt install libreoffice
 ```
 
-### Date Strategy
+#### macOS
 
-Similar to timestamp but focused on date-only formats.
-
-**Options:**
-
-- `format` (string): PHP DateTime format string
-  - Default: 'Y-m-d'
-  - Common formats:
-    - `'Y-m-d'` → "2024-03-15"
-    - `'Ymd'` → "20240315"
-    - `'Y/m/d'` → "2024/03/15"
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'dated_']`
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_version']`
-
-```php
-use Blaspsoft\Onym\Facades\Onym;
-
-// Using date with prefix and suffix
-Onym::make('document', 'pdf', 'date', [
-    'format' => 'Y-m-d',
-    'prefix' => 'dated_',
-    'suffix' => '_version'
-]);
-// Result: "dated_2024-03-15_document_version.pdf"
-
-// You can also use the date method directly
-Onym::date(string $defaultFilename, string $extension, ?array $options = [])
+```bash
+brew install libreoffice
 ```
 
-### Numbered Strategy
+# or download from https://www.libreoffice.org/download/download-libreoffice/
 
-Adds a number to the filename.
+#### Windows
 
-**Options:**
-
-- `number` (int): The number to append to the filename
-  - Default: 1
-  - Example: `['number' => 5]`
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'rev_']`
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_final']`
-
-```php
-use Blaspsoft\Onym\Facades\Onym;
-
-// Adding numbers with prefix and suffix
-Onym::make('document', 'pdf', 'numbered', [
-    'number' => 5,
-    'prefix' => 'rev_',
-    'suffix' => '_final'
-]);
-// Result: "rev_document_5_final.pdf"
-
-// You can also use the numbered method directly
-Onym::numbered(string $defaultFilename, string $extension, ?array $options = [])
+```bash
+choco install libreoffice
 ```
 
-### Slug Strategy
+# or download from https://www.libreoffice.org/download/download-libreoffice/
 
-Converts the filename to a URL-friendly slug.
+#### Docker
 
-**Options:**
+If you're using Docker, you can add LibreOffice to your container:
 
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'post_']`
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_draft']`
+```dockerfile
+# Ubuntu/Debian based
+RUN apt-get update && apt-get install -y libreoffice
 
-```php
-use Blaspsoft\Onym\Facades\Onym;
-
-// Converting strings to slugs with prefix and suffix
-Onym::make('My Document Name', 'pdf', 'slug', [
-    'prefix' => 'post_',
-    'suffix' => '_draft'
-]);
-// Result: "post_my-document-name_draft.pdf"
-
-// You can also use the slug method directly
-Onym::slug(string $defaultFilename, string $extension, ?array $options = [])
+# Alpine based
+RUN apk add --no-cache libreoffice
 ```
 
-### Hash Strategy
+### PHP Requirements
 
-Generates a hash of the filename using various algorithms.
+- PHP >= 8.1
+- ext-fileinfo
+- Laravel >= 9.0
 
-**Options:**
+## Supported Conversions 📄 ↔️ 📑
 
-- `algorithm` (string): The hashing algorithm to use
-  - Default: 'md5'
-  - Available algorithms:
-    - 'md5' (32 characters)
-    - 'sha1' (40 characters)
-    - 'sha256' (64 characters)
-    - Any algorithm supported by PHP's `hash()` function
-- `prefix` (string): String to prepend to the filename
-  - Default: ''
-  - Example: `['prefix' => 'hash_']`
-- `suffix` (string): String to append before the extension
-  - Default: ''
-  - Example: `['suffix' => '_checksum']`
+| From/To | PDF | DOCX | ODT | RTF | TXT | HTML | EPUB | XML | XLSX | ODS | CSV | PPT | PPTX | ODP | PNG | JPG | SVG | TIFF |
+| ------- | :-: | :--: | :-: | :-: | :-: | :--: | :--: | :-: | :--: | :-: | :-: | :-: | :--: | :-: | :-: | :-: | :-: | :--: |
+| DOC     | ✅  |  ✅  | ✅  | ✅  | ✅  |  ✅  |  ✅  | ✅  |      |     |     |     |      |     |     |     |     |      |
+| DOCX    | ✅  |      | ✅  | ✅  | ✅  |  ✅  |  ✅  | ✅  |      |     |     |     |      |     |     |     |     |      |
+| ODT     | ✅  |  ✅  | ✅  | ✅  | ✅  |  ✅  |      | ✅  |      |     |     |     |      |     |     |     |     |      |
+| RTF     | ✅  |  ✅  | ✅  |     | ✅  |  ✅  |      | ✅  |      |     |     |     |      |     |     |     |     |      |
+| TXT     | ✅  |  ✅  | ✅  |     |     |  ✅  |      | ✅  |      |     |     |     |      |     |     |     |     |      |
+| HTML    | ✅  |      | ✅  |     | ✅  |      |      |     |      |     |     |     |      |     |     |     |     |      |
+| XML     | ✅  |  ✅  | ✅  |     | ✅  |  ✅  |      |     |      |     |     |     |      |     |     |     |     |      |
+| CSV     | ✅  |      |     |     |     |  ✅  |      |     |  ✅  | ✅  |     |     |      |     |     |     |     |      |
+| XLSX    | ✅  |      |     |     |     |  ✅  |      |     |      | ✅  | ✅  |     |      |     |     |     |     |      |
+| XLS     | ✅  |      |     |     |     |  ✅  |      |     |      | ✅  | ✅  |     |      |     |     |     |     |      |
+| ODS     | ✅  |      |     |     |     |  ✅  |      |     |  ✅  |     | ✅  |     |      |     |     |     |     |      |
+| PPTX    | ✅  |      |     |     |     |      |      |     |      |     |     |     |      | ✅  |     |     |     |      |
+| PPT     | ✅  |      |     |     |     |      |      |     |      |     |     |     |      | ✅  |     |     |     |      |
+| ODP     | ✅  |      |     |     |     |      |      |     |      |     |     |     |  ✅  |     |     |     |     |      |
+| SVG     | ✅  |      |     |     |     |      |      |     |      |     |     |     |      |     | ✅  | ✅  |     |  ✅  |
+| JPG     | ✅  |      |     |     |     |      |      |     |      |     |     |     |      |     | ✅  |     | ✅  |      |
+| PNG     | ✅  |      |     |     |     |      |      |     |      |     |     |     |      |     |     | ✅  | ✅  |      |
+| BMP     | ✅  |      |     |     |     |      |      |     |      |     |     |     |      |     | ✅  | ✅  |     |      |
+| TIFF    | ✅  |      |     |     |     |      |      |     |      |     |     |     |      |     | ✅  | ✅  |     |      |
 
-```php
-use Blaspsoft\Onym\Facades\Onym;
+### Legend 🔍
 
-// Using hash with prefix and suffix
-Onym::make('document', 'pdf', 'hash', [
-    'algorithm' => 'md5',
-    'prefix' => 'hash_',
-    'suffix' => '_checksum'
-]);
-// Result: "hash_86985e105f79b95d6bc918fb45ec7727_checksum.pdf"
+- ✅ : Supported conversion
+- Empty cell: Conversion not supported
 
-// You can also use the hash method directly
-Onym::hash(string $defaultFilename, string $extension, ?array $options = [])
-```
+### File Type Categories 📁
 
-## Global Configuration
+- 📝 Documents: DOC, DOCX, ODT, RTF, TXT
+- 🌐 Web: HTML, XML
+- 📊 Spreadsheets: XLSX, XLS, ODS, CSV
+- 🎯 Presentations: PPT, PPTX, ODP
+- 🖼️ Images: SVG, JPG, PNG, BMP, TIFF
+- 📚 eBooks: EPUB
+- 📄 Universal: PDF
 
-You can set default values for all strategies in your `config/onym.php` file:
-
-```php
-return [
-    // Default filename when none is provided
-    'default_filename' => 'file',
-
-    // Default extension when none is provided
-    'default_extension' => 'txt',
-
-    // Default strategy when none is specified
-    'strategy' => 'random',
-
-    // Default options for all strategies
-    'options' => [
-
-        'random' => [
-            'length' => 16,
-            'prefix' => '',
-            'suffix' => '',
-        ],
-
-        'timestamp' => [
-            'format' => 'Y-m-d_H-i-s',
-            'prefix' => '',
-            'suffix' => '',
-        ],
-
-        'date' => [
-            'format' => 'Y-m-d',
-            'prefix' => '',
-            'suffix' => '',
-        ],
-
-        'numbered' => [
-            'number' => 1,
-            'separator' => '_',
-            'prefix' => '',
-            'suffix' => '',
-        ],
-
-        'hash' => [
-            'algorithm' => 'md5',
-            'length' => 16,
-            'prefix' => '',
-            'suffix' => '',
-        ],
-    ],
-];
-```
-
-These defaults can be overridden on a per-call basis using the `options` parameter in the `make()` and in all strategy methods.
+> **Note**: All conversions are performed using LibreOffice in headless mode 🚀
 
 ## License
 
