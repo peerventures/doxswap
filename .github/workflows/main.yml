@@ -15,13 +15,27 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2" # Set your desired PHP version
+          php-version: "8.2"
           extensions: mbstring, dom, zip
 
-      # Step 3: Install Composer dependencies
+      # Step 3: Install LibreOffice (Required for Conversion)
+      - name: Install LibreOffice
+        run: sudo apt-get update && sudo apt-get install -y libreoffice
+
+      # Step 4: Install Composer dependencies
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      # Step 4: Run PHPUnit tests
+      # Step 5: Set up Laravel environment (if needed)
+      - name: Set up environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # Step 6: Run PHPUnit tests
       - name: Run tests
-        run: php ./vendor/bin/phpunit
+        run: php ./vendor/bin/phpunit --testsuite=Unit --testsuite=Feature
+
+      # Step 7: Run Integration tests (requires LibreOffice)
+      - name: Run Integration tests
+        run: php ./vendor/bin/phpunit --testsuite=Integration

@@ -76,6 +76,14 @@ class ConversionService
      */
     public function convertFile(string $filename, string $toExtension): string
     {
+        if (empty($filename)) {
+            throw new ConversionFailedException('File is empty');
+        }
+
+        if (!Storage::disk($this->inputDisk)->exists($filename)) {
+            throw new ConversionFailedException('File does not exist');
+        }
+
         $filePath = Storage::disk($this->inputDisk)->path($filename);
         $fromExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 

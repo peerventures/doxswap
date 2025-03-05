@@ -3,6 +3,7 @@
 namespace Blaspsoft\Doxswap;
 
 use Blaspsoft\Doxswap\ConversionService;
+use Blaspsoft\Doxswap\Exceptions\ConversionFailedException;
 
 /**
  * @method static \Blaspsoft\Doxswap\Doxswap convert(string $file, string $toFormat)
@@ -60,22 +61,4 @@ class Doxswap
 
         return $this;
     }
-
-    /**
-     * Configure the conversion service.
-     *
-     * @param string|null $disk
-     * @param string|null $outputDisk
-     * @param string|null $libreOfficePath
-     * @param array|null $supportedConversions
-     * @param array|null $mimeTypes
-     * @return self
-     */
-    public function configure(?string $disk, ?string $outputDisk)
-    {
-        //$this->conversionService->configure($disk, $outputDisk);
-
-        //return $this;
-    }
-
 }
