@@ -32,7 +32,7 @@ abstract class TestCase extends BaseTestCase
         $app['config']->set('doxswap.input_disk', 'input');
         $app['config']->set('doxswap.output_disk', 'output');
         $app['config']->set('doxswap.perform_cleanup', false);
-        $app['config']->set('doxswap.libre_office_path', '/Applications/LibreOffice.app/Contents/MacOS/soffice');
+        //$app['config']->set('doxswap.libre_office_path', '/Applications/LibreOffice.app/Contents/MacOS/soffice'); uncomment this for macos
         $app['config']->set('doxswap.mime_types', config('doxswap.mime_types'));
         $app['config']->set('doxswap.supported_conversions', config('doxswap.supported_conversions'));
     }
