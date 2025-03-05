@@ -26,7 +26,7 @@ class ConversionService
      *
      * @var string
      */
-    protected $storageDisk;
+    protected $inputDisk;
 
     /**
      * The output disk.
@@ -56,9 +56,9 @@ class ConversionService
      */
     protected $performCleanup;
 
-    public function __construct(?string $storageDisk = null, ?string $outputDisk = null)
+    public function __construct(?string $inputDisk = null, ?string $outputDisk = null)
     {
-        $this->storageDisk = $storageDisk ?? config('doxswap.input_disk');
+        $this->inputDisk = $inputDisk ?? config('doxswap.input_disk');
         $this->outputDisk = $outputDisk ?? config('doxswap.output_disk');
         $this->supportedConversions = config('doxswap.supported_conversions');
         $this->mimeTypes = config('doxswap.mime_types');
@@ -76,7 +76,7 @@ class ConversionService
      */
     public function convertFile(string $filename, string $toExtension): string
     {
-        $filePath = Storage::disk($this->storageDisk)->path($filename);
+        $filePath = Storage::disk($this->inputDisk)->path($filename);
         $fromExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
         if (!$this->isSupportedMimeType($fromExtension)) {
@@ -105,7 +105,7 @@ class ConversionService
      * @param string $format
      * @return self
      */
-    public function process(string $filePath, string $format): void
+    protected function process(string $filePath, string $format): void
     {
         $command = [
             $this->libreOfficePath,
@@ -130,7 +130,7 @@ class ConversionService
      * @param string $toExtension
      * @return bool
      */
-    public function isSupportedConversion(string $fromExtension, string $toExtension): bool
+    protected function isSupportedConversion(string $fromExtension, string $toExtension): bool
     {
         return isset($this->supportedConversions[$fromExtension]) &&
                in_array($toExtension, $this->supportedConversions[$fromExtension]);
@@ -142,7 +142,7 @@ class ConversionService
      * @param string $extension
      * @return bool
      */
-    public function isSupportedMimeType(string $extension): bool
+    protected function isSupportedMimeType(string $extension): bool
     {
         return isset($this->mimeTypes[$extension]);
     }
@@ -156,7 +156,7 @@ class ConversionService
     protected function cleanup(string $filename): void
     {
         if ($this->performCleanup) {
-            Storage::disk($this->storageDisk)->delete($filename);
+            Storage::disk($this->inputDisk)->delete($filename);
         }
     }
 
