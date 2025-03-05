@@ -69,8 +69,6 @@ Supports various document formats including:
 - Web: HTML, XML
 - Other: PDF, EPUB
 
-[Conversion Matrix Here]
-
 ### Usage
 
 ```php

@@ -27,10 +27,11 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       # Step 5: Set up Laravel environment (if needed)
-      - name: Set up environment
+      - name: Set up Laravel environment
         run: |
-          cp .env.example .env
-          php artisan key:generate
+          echo "APP_KEY=$(php artisan key:generate --show)" > .env
+          echo "APP_ENV=testing" >> .env
+          echo "DB_CONNECTION=sqlite" >> .env
 
       # Step 6: Run PHPUnit tests
       - name: Run tests
