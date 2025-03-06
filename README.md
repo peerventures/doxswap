@@ -27,7 +27,7 @@ A Laravel package for seamless document conversion using LibreOffice. Convert be
 You can install the package via composer:
 
 ```bash
-composer require yourvendor/doxswap:0.1.0-beta
+composer require blaspsoft/doxswap:0.1.0-beta
 ```
 
 You can publish the config file with:
