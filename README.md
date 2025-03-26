@@ -14,7 +14,7 @@ A Laravel package for seamless document and image format conversions. Transform 
 
 ## 🚀 Features
 
-- 📄 **Multiple Format Support** – Convert between documents (DOCX, PDF, ODT) and images (PNG, JPG, WEBP) with ease
+- 📄 **Multiple Format Support** – Convert between documents (DOCX, XLSX, ODT) and images (PNG, JPG, WEBP) with ease
 - 🚀 **Simple API** – Easy-to-use interface for all conversion operations
 - 💾 **Laravel Storage Integration** – Works seamlessly with Laravel's filesystem drivers
 - ⚡ **Efficient Processing** – Optimized conversion using LibreOffice and ImageMagick engines
