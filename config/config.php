@@ -24,209 +24,77 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Perform Cleanup
+    | Cleanup
     |--------------------------------------------------------------------------
     |
-    | Here you may specify if the cleanup should be performed.
-    | If the cleanup is performed, the input file will be deleted after the
-    | conversion is complete.
+    | Here you may specify if the input file should be deleted after the conversion.
     |
     */
     'perform_cleanup' => false,
 
     /*
     |--------------------------------------------------------------------------
-    | LibreOffice Path
+    | File Naming Strategy
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the path to the LibreOffice binary.
-    |
-    | Default Linux path: /usr/bin/soffice
-    | Default Mac path: /Applications/LibreOffice.app/Contents/MacOS/soffice
-    | Default Windows path: C:\Program Files\LibreOffice\program\soffice.exe
-    |--------------------------------------------------------------------------
-    */
-    'libre_office_path' => env('LIBRE_OFFICE_PATH', '/usr/bin/soffice'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Supported Conversions
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the supported conversions for each file type.
-    | The key represents the file extension and the value is an array of
-    | supported file types that it can be converted to.
+    | Here you may specify the file naming strategy to use.
+    | This strategy is used to rename the output file.
     |
     */
-    'supported_conversions' => [
+    'filename' => [
 
-        'doc' => [
-            'pdf',
-            'docx',
-            'odt',
-            'rtf',
-            'txt',
-            'html',
-            'epub',
-            'xml',
-        ],
+        /*
+        |--------------------------------------------------------------------------
+        | Strategy
+        |--------------------------------------------------------------------------
+        |
+        | The strategy to use for the file naming.
+        |   
+        | Supported strategies:
+        | - original: The original file name is used.
+        | - random: A random file name is generated.
+        | - timestamp: A timestamp is generated.
+        |
+        */
+        'strategy' => 'original',
 
-        'docx' => [
-            'pdf',
-            'odt',
-            'rtf',
-            'txt',
-            'html',
-            'epub',
-            'xml',
-        ],
-
-        'odt' => [
-            'pdf',
-            'docx',
-            'doc',
-            'txt',
-            'rtf',
-            'html',
-            'xml',
-        ],
-
-        'rtf' => [
-            'pdf',
-            'docx',
-            'odt',
-            'txt',
-            'html',
-            'xml',
-        ],
-
-        'txt' => [
-            'pdf',
-            'docx',
-            'odt',
-            'html',
-            'xml',
-        ],
-
-        'html' => [
-            'pdf',
-            'odt',
-            'txt',
-        ],
-
-        'xml' => [
-            'pdf',
-            'docx',
-            'odt',
-            'txt',
-            'html',
-        ],
-
-        'csv' => [
-            'pdf',
-            'xlsx',
-            'ods',
-            'html',
-        ],
-
-        'xlsx' => [
-            'pdf',
-            'ods',
-            'csv',
-            'html',
-        ],
-
-        'xls' => [
-            'pdf',
-            'ods',
-            'csv',
-            'html',
-        ],
-
-        'ods' => [
-            'pdf',
-            'xlsx',
-            'xls',
-            'csv',
-            'html',
-        ],
-
-        'pptx' => [
-            'pdf',
-            'odp',
-        ],
-
-        'ppt' => [
-            'pdf',
-            'odp',
-        ],
-
-        'odp' => [
-            'pptx',
-            'pdf',
-        ],
-
-        'svg' => [
-            'pdf',
-            'png',
-            'jpg',
-            'tiff',
-        ],
-
-        'jpg' => [
-            'pdf',
-            'png',
-            'svg',
-        ],
-
-        'png' => [
-            'pdf',
-            'jpg',
-            'svg',
-        ],
-
-        'bmp' => [
-            'pdf',
-            'jpg',
-            'png',
-        ],
-
-        'tiff' => [
-            'pdf',
-            'jpg',
-            'png',
+        /*
+        |--------------------------------------------------------------------------
+        | Options
+        |--------------------------------------------------------------------------
+        |
+        | The options to use for the file naming.
+        |
+        | Supported options:
+        | - length: The length of the random file name.
+        | - prefix: The prefix of the file name.
+        | - suffix: The suffix of the file name.
+        | - separator: The separator of the file name.
+        | - format: The format of the timestamp.
+        |   
+        */
+        'options' => [
+            'length' => 24,
+            'prefix' => '',
+            'suffix' => '',
+            'separator' => '_',
+            'format' => 'YmdHis',
         ],
     ],
 
+
     /*
     |--------------------------------------------------------------------------
-    | MIME Types
+    | Drivers
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the MIME types for the supported file extensions.
-    | This is used to validate the file type before processing the conversion.
-    | If the MIME type does not match the expected value, the conversion will fail.
+    | Here you may specify the drivers to use for the conversion.
     |
+    | Supported drivers:
+    | - libreoffice: The LibreOffice driver.
+    |   
     */
-    'mime_types' => [
-        'doc' => 'application/msword',
-        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'odt' => 'application/vnd.oasis.opendocument.text',
-        'rtf' => 'text/rtf',
-        'txt' => 'text/plain',
-        'html' => 'text/html',
-        'xml' => 'text/xml',
-        'csv' => 'text/csv',
-        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'xls' => 'application/vnd.ms-excel',
-        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-        'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'ppt' => 'application/vnd.ms-powerpoint',
-        'odp' => 'application/vnd.oasis.opendocument.presentation',
-        'svg' => 'image/svg+xml',
-        'jpg' => 'image/jpeg',
-        'png' => 'image/png',
-        'bmp' => 'image/bmp',
-        'tiff' => 'image/tiff',
+    'drivers' => [
+        'libreoffice_path' => env('LIBRE_OFFICE_PATH', '/usr/bin/soffice'),
     ],
 ];

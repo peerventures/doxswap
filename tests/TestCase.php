@@ -8,6 +8,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 abstract class TestCase extends BaseTestCase
 {
     use MockeryPHPUnitIntegration;
+
     /**
      * Get package providers.
      *
@@ -29,11 +30,10 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app): void
     {
-        $app['config']->set('doxswap.input_disk', 'input');
-        $app['config']->set('doxswap.output_disk', 'output');
+        $app['config']->set('doxswap.input_disk', 'local');
+        $app['config']->set('doxswap.output_disk', 'local');
         $app['config']->set('doxswap.perform_cleanup', false);
-        //$app['config']->set('doxswap.libre_office_path', '/Applications/LibreOffice.app/Contents/MacOS/soffice'); uncomment this for macos
-        $app['config']->set('doxswap.mime_types', config('doxswap.mime_types'));
-        $app['config']->set('doxswap.supported_conversions', config('doxswap.supported_conversions'));
+        //$app['config']->set('doxswap.drivers.libreoffice_path', env('LIBREOFFICE_PATH', '/Applications/LibreOffice.app/Contents/MacOS/soffice'));
+        $app['config']->set('doxswap.drivers.libreoffice_path', env('LIBREOFFICE_PATH', '/usr/bin/soffice'));
     }
 }

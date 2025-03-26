@@ -2,63 +2,58 @@
 
 namespace Blaspsoft\Doxswap;
 
-use Blaspsoft\Doxswap\ConversionService;
-use Blaspsoft\Doxswap\Exceptions\ConversionFailedException;
-
 /**
  * @method static \Blaspsoft\Doxswap\Doxswap convert(string $file, string $toFormat)
- * @method static \Blaspsoft\Doxswap\Doxswap configure(string $disk, string $outputDisk)
  */
 class Doxswap
 {
     /**
-     * The input file.
+     * The format registry.
      *
-     * @var string
+     * @var \Blaspsoft\Doxswap\FormatRegistry
      */
-    public $inputFile;
+    protected FormatRegistry $formatRegistry;
 
     /**
-     * The output file.
+     * The cleanup.
      *
-     * @var string
+     * @var \Blaspsoft\Doxswap\ConversionCleanup
      */
-    public $outputFile;
+    protected ConversionCleanup $cleanup;
 
     /**
-     * The format to convert the file to.
+     * The result.
      *
-     * @var string
+     * @var \Blaspsoft\Doxswap\ConversionResult|null
      */
-    public $toFormat;
+    protected ?ConversionResult $result = null;
 
     /**
-     * The conversion service.
+     * Create a new Doxswap instance.
      *
-     * @var \Blaspsoft\Doxswap\ConversionService
+     * @return void
      */
-    protected $conversionService;
-
     public function __construct()
     {
-        $this->conversionService = new ConversionService();
+        $this->formatRegistry = new FormatRegistry();
+
+        $this->cleanup = new ConversionCleanup();
     }
 
     /**
      * Convert a file to a different format
      *
      * @param string $file The absolute path to the file to convert
-     * @param string $format The format to convert the file to
-     * @return self
+     * @param string $toFormat The format to convert the file to
+     * @return \Blaspsoft\Doxswap\ConversionResult
      */
-    public function convert($file, $toFormat)
+    public function convert(string $file, string $toFormat): ConversionResult
     {
-        $this->inputFile = $file;
+        $this->result = $this->formatRegistry->convert($file, $toFormat);
 
-        $this->toFormat = $toFormat;
+        $this->cleanup->cleanup($this->result->inputFilename);
 
-        $this->outputFile = $this->conversionService->convertFile($this->inputFile, $this->toFormat);
-
-        return $this;
+        return $this->result;
     }
 }
+
