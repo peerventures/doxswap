@@ -10,7 +10,7 @@
 
 # Doxswap
 
-A Laravel package for seamless document and image format conversions. Transform between various formats like DOCX, PDF, ODT, and popular image formats using a simple, elegant API. Powered by LibreOffice for documents and ImageMagick for image processing.
+A Laravel package for seamless document and image format conversions. Transform between various formats like DOCX -> PDF, HTML -> PDF, PNG -> WEBP, and more popular formats using a simple, elegant API. Powered by LibreOffice for documents and ImageMagick for image processing.
 
 ## 🚀 Features
 
