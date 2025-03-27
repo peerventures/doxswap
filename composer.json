@@ -40,14 +40,14 @@
   "config": {
     "sort-packages": true
   },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Blaspsoft\\Doxswap\\DoxswapServiceProvider"
-      ],
-      "aliases": {
-        "Doxswap": "Blaspsoft\\Doxswap\\Facades\\Doxswap"
-      }
+ "extra": {
+  "laravel": {
+    "providers": [
+      "Peerventures\\Doxswap\\DoxswapServiceProvider"
+    ],
+    "aliases": {
+      "Doxswap": "Peerventures\\Doxswap\\Facades\\Doxswap"
     }
   }
+}
 }
