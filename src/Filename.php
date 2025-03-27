@@ -55,8 +55,6 @@ class Filename
 
         return match ($this->strategy) {
             'original' => basename($filePath),
-            'random' => Onym::make(strategy: 'random', extension: $extension, options: $this->options),
-            'timestamp' => Onym::make(strategy: 'timestamp', extension: $extension, options: $this->options),
         };
     }
 
