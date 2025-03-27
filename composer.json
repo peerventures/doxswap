@@ -26,12 +26,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Blaspsoft\\Doxswap\\": "src"
+      "Peerventures\\Doxswap\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Blaspsoft\\Doxswap\\Tests\\": "tests"
+      "Peerventures\\Doxswap\\Tests\\": "tests"
     }
   },
   "scripts": {
