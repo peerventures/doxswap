@@ -1,5 +1,5 @@
 {
-  "name": "blaspsoft/doxswap",
+  "name": "peerventures/doxswap"
   "description": "Doxswap is a simple document conversion package for Laravel which uses LibreOffice to convert documents to a variety of formats.",
   "version": "dev-main",
   "keywords": [
